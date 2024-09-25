@@ -45,7 +45,8 @@
             android:layout_height="60dp"
             android:text="Show"
             android:textAllCaps="false"
-            android:background="@color/ButtonColor">
+            android:background="@color/ButtonColor"
+            android:onClick="getResult">
         </Button>
     </LinearLayout>
     <LinearLayout
@@ -74,14 +75,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pressure:"
-            android:textSize="20sp">
+            android:textSize="20sp"
+            android:id="@+id/pressure">
         </TextView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wind speed:"
-            android:textSize="20sp">
+            android:textSize="20sp"
+            android:id="@+id/Speed">
         </TextView>
 
     </LinearLayout>

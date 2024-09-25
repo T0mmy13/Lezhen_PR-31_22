@@ -1,6 +1,7 @@
 package com.example.lezhen_pr_31_22
 
 import android.annotation.SuppressLint
+import android.health.connect.datatypes.units.Pressure
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,8 +20,8 @@ import org.json.JSONObject
 
 class MainScreen : AppCompatActivity() {
 
-    private lateinit var city:EditText
     private lateinit var btn : Button
+    private lateinit var cityString : EditText
 
 
     @SuppressLint("MissingInflatedId")
@@ -28,31 +29,34 @@ class MainScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_screen)
 
+        cityString = findViewById(R.id.CityString)
         btn = findViewById(R.id.button)
-        city = findViewById(R.id.CityString)
-
-
-        btn.setOnClickListener(){
-            getResult(city.text.toString())
-        }
     }
-    fun getResult(city: String){
-        if (city.isNotEmpty()) {
+
+    fun getResult(view: View) {
+        val City = cityString.text.toString()
+        if (City.isNotEmpty()) {
             val key = "47ab2f8e57db6d23a9aa5f920561eede"
-            var url = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+key+"&units=metric&lang=ru"
+            //var url = "https://api.openweathermap.org/data/2.5/weather?q="+City+"&appid="+key+"&units=metric&lang=ru"
+            var url = "https://api.openweathermap.org/data/2.5/weather?q=Екатеринбург&appid=47ab2f8e57db6d23a9aa5f920561eede&units=metric&lang=ru"
             val queue = Volley.newRequestQueue(this)
             var Temp = findViewById<TextView>(R.id.temperature)
-            var City = findViewById<TextView>(R.id.CityString)
+            var City = findViewById<TextView>(R.id.city)
+            var Pres = findViewById<TextView>(R.id.pressure)
+            var Speed = findViewById<TextView>(R.id.Speed)
             val stringRequest = StringRequest(
                 Request.Method.GET,
                 url,
                 {
-                    response->
+                        response->
                     val obj = JSONObject(response)
-                    var js = obj.getJSONObject("name")
-                    City.setText("Yout city:" + js.getString("${obj.getJSONObject("name")}"))
-                    js = obj.getJSONObject("main")
+                    var js = obj.getJSONObject("main")
                     Temp.setText("Temperature: " + js.getString("temp"))
+                    Pres.setText("Pressure: " + js.getString("pressure"))
+                    js = obj.getJSONObject("wind")
+                    Speed.setText("Wind speed: " + js.getString("speed"))
+
+                    City.setText("Yout city:" + js.getString("${obj.getJSONObject("name")}"))
 
                     val rootView : View = findViewById(R.id.rootview)
                     val snackBar = Snackbar.make(rootView, "Выводит", Snackbar.LENGTH_SHORT)
